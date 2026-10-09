@@ -1,0 +1,481 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+  --font-color: #3B915C;
+  --background-color: white;
+  /* Jarak kiri-kanan halaman: menyesuaikan lebar layar (16px di HP, maks 90px di desktop) */
+  --page-gutter: clamp(16px, 6vw, 90px);
+  --content-max-width: 1400px;
+}
+
+[data-theme='light'] {
+  --font-color: white;
+  --background-color: #3B915C;
+}
+ 
+[data-theme='dark'] {
+  --font-color: #eee;
+  --background-color: #333;
+}
+
+/* Warna background & teks field saat diisi otomatis oleh browser */
+.register-page form input:-webkit-autofill,
+.register-page form input:-webkit-autofill:focus,
+.login-page form input:-webkit-autofill,
+.login-page form input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset; /* warna background */
+  -webkit-text-fill-color: #000000;               /* warna teks */
+  caret-color: #000000;                           /* warna kursor */
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    /* background:  #3B915C; */
+    /* color: white; */
+    min-width: 320px;
+    overflow-x: hidden;
+    overflow-wrap: anywhere;
+    background-color: var(--background-color);
+    color: var(--font-color);
+    transition: background 0.3s ease-in;
+}
+
+img, svg, video {
+  max-width: 100%;
+}
+
+main {
+  /* ruang agar tombol melayang tidak menutupi konten paling bawah */
+  padding-bottom: 88px;
+}
+
+.theme-icon {
+  cursor: pointer;
+}
+
+/* ---------- Navigation ---------- */
+.navigation {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px var(--page-gutter);
+}
+
+/* Judul mengambil sisa ruang dan boleh turun ke 2 baris di layar sempit */
+.navigation > h1 {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: clamp(16px, 4.5vw, 28px);
+    line-height: 1.2;
+    text-decoration: underline;
+}
+
+/* Menu selalu di kanan atas, tidak pernah pindah baris */
+.right-navigation {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(10px, 2.5vw, 24px);
+    font-size: clamp(18px, 4.5vw, 28px);
+    white-space: nowrap;
+}
+
+.right-navigation svg {
+  flex-shrink: 0;
+}
+
+/* Ikon + nama user: dipotong dengan "..." jika terlalu panjang, dengan atau tanpa <span class="logout-name"> */
+.logout {
+  display: inline-block;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.logout-image {
+  margin-right: 8px;
+  vertical-align: -0.15em;
+}
+
+.link:visited {
+    color: white;
+}
+
+.link:link {
+    color: white;
+}
+
+.translation-icon {
+  cursor: pointer;
+}
+
+/* ---------- Home / Archives ---------- */
+.home-page, .archives-page {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: clamp(20px, 4vw, 40px) var(--page-gutter) 0;
+}
+
+.search-bar {
+    width: 100%;
+    margin: 16px auto;
+    padding: 10px 12px;
+    font-size: 16px; /* 16px mencegah iOS zoom otomatis saat input difokuskan */
+    border-radius: 4px;
+    border: 1px solid white;
+}
+
+.not-found, .loading-message {
+    padding: clamp(24px, 5vw, 40px) 16px;
+    font-size: clamp(24px, 8vw, 40px);
+    text-align: center;
+}
+
+.no-notes{
+    margin-top: 30px;
+    padding: 0 16px;
+    font-size: clamp(24px, 8vw, 40px);
+    text-align: center;
+}
+
+.note-list {
+    width: 100%;
+    max-width: var(--content-max-width);
+    margin: 0 auto 30px;
+    padding: 0 var(--page-gutter);
+    background: transparent;
+}
+
+/* Kolom otomatis menyesuaikan lebar layar: 1 kolom di HP, bertambah seiring layar melebar */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    grid-template-rows: minmax(min-content, max-content);
+    gap: 16px;
+    margin-bottom: 48px;
+}
+
+.note-item {
+    min-width: 0;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.note-item__content {
+    padding: 12px;
+    flex: 1;
+}
+  
+.note-item__title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+  
+.note-item__date {
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: rgb(223, 201, 201);
+}
+  
+.note-item__body {
+  margin-top: 16px;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+  
+.note-item__action {
+  display: flex;
+}
+  
+.note-item__delete-button,.note-item__archive-button {
+  display: block;
+  width: 100%;
+  background-color: transparent;
+  border: 0;
+  border-top: 1px solid #aaa;
+  padding: 12px 0; /* area sentuh lebih besar di layar sentuh */
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+}
+  
+.note-item__delete-button {
+  border-right: 1px solid #aaa;
+  color: #ff5f52;
+}
+
+.note-item__archive-button {
+  color: #fff263;
+}
+  
+.note-item__archive-button:hover {
+  color: #c49000;
+}
+
+.note-item__delete-button:hover {
+  color: #b00020;
+}
+
+/* ---------- Detail ---------- */
+.note-details {
+  margin: clamp(20px, 4vw, 32px) auto 0;
+  width: calc(100% - 2 * var(--page-gutter));
+  max-width: 900px;
+}
+
+.note-details img,
+.note-details pre,
+.note-details table {
+  max-width: 100%;
+}
+
+.note-details pre {
+  overflow-x: auto;
+}
+
+.note-detail-title {
+  font-size: clamp(26px, 6vw, 43px);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.note-detail-date {
+  margin-bottom: 30px;
+  color: rgb(223, 201, 201);
+  font-weight: 550;
+}
+
+/* ---------- Tombol melayang ---------- */
+.add-new-note-botton {
+  position: fixed;
+  bottom: 20px;
+  right: clamp(16px, 3vw, 32px);
+  line-height: 0;
+}
+
+.add-new-note-botton svg,
+.check-circle {
+  width: clamp(48px, 12vw, 65px);
+  height: clamp(48px, 12vw, 65px);
+}
+
+.check-circle {
+  position: fixed;
+  bottom: 20px;
+  right: clamp(16px, 3vw, 32px);
+  cursor: pointer;
+}
+
+/* ---------- Form catatan baru ---------- */
+.new-note-form {
+  max-width: var(--content-max-width);
+  margin: clamp(20px, 4vw, 40px) auto;
+  padding: 0 var(--page-gutter);
+  text-align: center;
+}
+
+.title-input {
+  font-size: 18px;
+  padding: clamp(12px, 2vw, 16px);
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.body-input {
+  text-align: left;
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 4px;
+  color: var(--on-background);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 4vw, 24px);
+  min-height: clamp(260px, 55vh, 500px);
+  padding: 10px;
+}
+
+[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--on-background-grey)
+}
+
+/* ---------- Login / Register ---------- */
+.register-page, .login-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.register-page h2, .login-page h2 {
+  font-size: clamp(20px, 5vw, 24px);
+}
+
+.register-page form label, .login-page form label {
+  font-size: clamp(16px, 3.5vw, 20px);
+}
+
+.register-page form input, .login-page form input {
+  display: block;
+  padding: clamp(12px, 2.5vw, 16px);
+  width: 100%;
+  margin: 8px 0;
+  font-size: clamp(16px, 4vw, 24px);
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 8px;
+  color: white;
+}
+
+.register-page form button, .login-page form button {
+  display: block;
+  width: 100%;
+  padding: clamp(12px, 2.5vw, 16px);
+  font-size: clamp(16px, 4vw, 24px);
+  background-color: lightblue;
+  border: 2px solid black;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+/* ---------- Breakpoint ---------- */
+
+/* HP: nama user dipersingkat */
+@media only screen and (max-width: 520px) {
+  .logout {
+    max-width: 120px;
+  }
+
+  .logout-name {
+    font-size: 14px;
+  }
+}
+
+/* HP sangat kecil: hanya ikon logout (nama tetap tampil sebagai tooltip via atribut title) */
+@media only screen and (max-width: 400px) {
+  .logout {
+    max-width: none;
+  }
+
+  .logout-name {
+    display: none;
+  }
+
+  .logout-image {
+    margin-right: 0;
+  }
+}
+
+/* ---------- Modal konfirmasi ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  padding: clamp(20px, 5vw, 28px);
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.modal__title {
+  margin-bottom: 8px;
+  font-size: clamp(18px, 4.5vw, 22px);
+}
+
+.modal__message {
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal__button {
+  min-height: 44px; /* area sentuh nyaman di layar sentuh */
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal__button--cancel {
+  border: 1px solid var(--font-color);
+  background-color: transparent;
+  color: var(--font-color);
+}
+
+.modal__button--confirm {
+  border: 1px solid #b00020;
+  background-color: #d32f2f;
+  color: white;
+}
+
+.modal__button--cancel:hover {
+  opacity: 0.8;
+}
+
+.modal__button--confirm:hover {
+  background-color: #b00020;
+}
+
+.modal__button:focus-visible {
+  outline: 3px solid #fff263;
+  outline-offset: 2px;
+}
+
+/* HP kecil: tombol memenuhi lebar dan tersusun vertikal (Hapus di atas, Batal di bawah) */
+@media only screen and (max-width: 400px) {
+  .modal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .modal__button {
+    width: 100%;
+  }
+}
